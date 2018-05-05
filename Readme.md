@@ -69,4 +69,4 @@ Visualizeer uses environment variable strings to access an instance of Universal
 
 ## Inspiration
 
-Inspired by [docker-swarm-visualizer](https://github.com/dockersamples/docker-swarm-visualizer)]
+Inspired by [docker-swarm-visualizer](https://github.com/dockersamples/docker-swarm-visualizer)

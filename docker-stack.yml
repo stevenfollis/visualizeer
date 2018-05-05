@@ -1,0 +1,15 @@
+version: "3"
+services:
+  visualizeer:
+    image: stevenfollis/visualizeer:latest
+    ports:
+      - "80:80"
+    deploy:
+      placement:
+        constraints:
+          - node.platform.os == linux
+          - node.role == worker
+    environment:
+      - ucp_fqdn=ucp.contoso.com
+      - ucp_username=admin
+      - ucp_password=SecurePassw0rd1

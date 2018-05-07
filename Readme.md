@@ -1,3 +1,5 @@
+[![Build Status](https://stevenfollis.visualstudio.com/_apis/public/build/definitions/3ac656a6-63d4-488c-b8f9-f4e1c88cdb58/6/badge)](https://stevenfollis.visualstudio.com/Visualizeer/_build/index?definitionId=3ac656a6-63d4-488c-b8f9-f4e1c88cdb58)
+
 # Visualizeer
 
 Inspect and search through containers and nodes in a Docker EE cluster.

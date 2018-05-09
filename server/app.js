@@ -102,7 +102,8 @@ async function getToken() {
         username: config.ucp_username,
         password: config.ucp_password
       },
-      json: true
+      json: true,
+      rejectUnauthorized: false
     };
 
     // Select session token from the response body
@@ -129,7 +130,8 @@ async function getNodes() {
     headers: {
       authorization: `Bearer ${token}`
     },
-    json: true
+    json: true,
+    rejectUnauthorized: false
   };
 
   // Get node data
@@ -142,7 +144,8 @@ async function getNodes() {
     headers: {
       authorization: `Bearer ${token}`
     },
-    json: true
+    json: true,
+    rejectUnauthorized: false
   };
 
   // Get container data

@@ -97,7 +97,7 @@ async function getToken() {
     // Setup Request options
     const options = {
       method: 'POST',
-      uri: `https://${config.ucp_fqdn}/id/login`,
+      uri: `https://${config.ucp_fqdn}/auth/login`,
       body: {
         username: config.ucp_username,
         password: config.ucp_password
@@ -110,7 +110,7 @@ async function getToken() {
     const response = await request(options);
 
     // Store token 
-    config.token = response.sessionToken;
+    config.token = response.auth_token;
 
     // Return session token
     return config.token;

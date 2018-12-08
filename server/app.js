@@ -1,3 +1,4 @@
+var fs = require('fs');
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -10,15 +11,10 @@ var _ = require('lodash');
 var healthcheck = require('express-healthcheck');
 
 // Global Config
-// TODO: refactor into something not dumb
-let config = {
-  token: null,
-  ucp_fqdn: process.env.ucp_fqdn,
-  ucp_username: process.env.ucp_username,
-  ucp_password: process.env.ucp_password,
-  refresh_rate: process.env.refresh_rate || 3000,
-  debug: process.env.debug || false
-};
+let config = getConfig();
+
+console.log(`Config is:`);
+console.log(config);
 
 // Express
 var app = express();
@@ -38,7 +34,9 @@ app.set('view engine', 'pug');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -46,14 +44,14 @@ app.use('/healthcheck', healthcheck());
 app.use('/users', users);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -82,6 +80,33 @@ setInterval(function () {
 
 }, config.refresh_rate);
 
+
+function getConfig() {
+
+  // Attempt to retrieve secrets, else fallback to env variables
+  return {
+    token: null,
+    ucp_fqdn: getSecret('ucp_fqdn') || process.env.ucp_fqdn,
+    ucp_username: getSecret('ucp_username') || process.env.ucp_username,
+    ucp_password: getSecret('ucp_password') || process.env.ucp_password,
+    refresh_rate: process.env.refresh_rate || 3000,
+    debug: process.env.debug || false
+  };
+
+}
+
+function getSecret(secretName) {
+
+  const secretPath = `/run/secrets/visualizeer.${secretName}`;
+
+  if (fs.existsSync(secretPath)) {
+    console.log(`Docker Secret detected for ${secretName}`);
+    return fs.readFileSync(secretPath, 'utf8');
+  } else {
+    console.log(`No Docker Secret detected for ${secretName}`);
+    return false;
+  };
+}
 
 async function getToken() {
 

@@ -16,16 +16,29 @@ Uses the Universal Control Plane (UCP) API
 docker run \
   -d \
   -p 80:80 \
-  -e "ucp_fqdn=ucp.contoso.com" \
-  -e "ucp_username=admin" \
+  -e 'ucp_fqdn=ucp.contoso.com' \
+  -e 'ucp_username=admin' \
   -e 'ucp_password=SecurePassw0rd1' \
   --name visualizeer \
   stevenfollis/visualizeer:latest
 ```
 
-### Docker Stack
+### Docker Secrets
+Visualizeer uses Docker Secrets to access an instance of Universal Control Plane
 
+To setup secets, connect to the UCP cluster via a [Client Bundle](https://docs.docker.com/ee/ucp/user-access/cli) and create either with the GUI or:
+
+```sh
+printf 'ucp.moby.com' | docker secret create visualizeer.ucp_fqdn -
+
+printf 'admin' | docker secret create visualizeer.ucp_username -
+
+printf 'SecurePassw0rd1' | docker secret create visualizeer.ucp_password -
 ```
+
+#### Docker Stack with Secrets:
+
+```yaml
 version: "3"
 services:
   visualizeer:
@@ -44,7 +57,7 @@ services:
 ```
 
 ### Environment Variables
-Visualizeer uses environment variable strings to access an instance of Universal Control Plane
+Instead of Secrets, Visualizeer can use environment variable strings to access an instance of Universal Control Plane
 
 | Variable Name | Purpose | Example Value |
 |---|---|---|
@@ -53,6 +66,26 @@ Visualizeer uses environment variable strings to access an instance of Universal
 | **ucp_password** | Password for account to use for querying the UCP API | `SecurePassw0rd1` |
 | **refresh_rate** | How often to poll the API (ms). Defaults to 3000 (3s) | `3000` |
 | **debug** | Enable debug mode for additional logging (default false) | `false` |
+
+#### Docker Stack with Environment Variables:
+
+```yaml
+version: "3.3"
+services:
+  visualizeer:
+    image: stevenfollis/visualizeer:latest
+    ports:
+      - "80:80"
+    deploy:
+      placement:
+        constraints:
+          - node.platform.os == linux
+          - node.role == worker
+    environment:
+      - ucp_fqdn=ucp.contoso.com
+      - ucp_username=admin
+      - ucp_password=SecurePassw0rd1
+```
 
 ## Features
 

@@ -13,7 +13,7 @@ var io = require('socket.io')(server);
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '8080');
+var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
@@ -37,6 +37,10 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 console.log(`Server started on port ${port}`);
+
+if (process.env.debug) {
+  console.log(`Server started with debug mode enabled`);
+}
 
 /**
  * Normalize a port into a number, string, or false.

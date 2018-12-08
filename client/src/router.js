@@ -1,16 +1,15 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import Dashboard from './components/Dashboard.vue';
+import Vue from "vue";
+import Router from "vue-router";
+import Home from "./views/Home.vue";
 
 Vue.use(Router);
 
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'Dashboard',
-      component: Dashboard,
-    },
-  ],
+      path: "/",
+      name: "home",
+      component: Home
+    }
+  ]
 });
-

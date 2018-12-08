@@ -13,8 +13,8 @@
         "ucp_fqdn": "ucp.ishmael.in",
         "ucp_username": "steven",
         "ucp_password": "DockerEE123!",
-        "PORT": 8080
-
+        "PORT": "3000",
+        "debug": "true"
       }
     }
   ]

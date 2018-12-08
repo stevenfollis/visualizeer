@@ -1,7 +1,7 @@
 ###################################################
 # Server-Side Builder Stage
 ###################################################
-FROM node:9-alpine as builder-server
+FROM node:10.14.1-alpine as builder-server
 
 # Create app directory
 RUN mkdir -p /usr/src/app
@@ -17,7 +17,7 @@ COPY ./server /usr/src/app
 ###################################################
 # Client-Side Builder Stage
 ###################################################
-FROM node:9-alpine as builder-client
+FROM node:10.14.1-alpine as builder-client
 
 # Create app directory
 RUN mkdir -p /usr/src/app
@@ -31,12 +31,14 @@ RUN npm install
 COPY ./client /usr/src/app
 
 # Build the project
-RUN npm run-script build
+RUN npm run build
 
 ###################################################
 # Final Stage
 ###################################################
-FROM node:9-alpine
+FROM node:10.14.1-alpine
+
+LABEL "Maintainer" "Steven Follis (steven.follis@docker.com)"
 
 # Expose port 80
 EXPOSE 80
@@ -51,7 +53,7 @@ WORKDIR /usr/src/app
 
 # Copy files
 COPY --from=builder-server /usr/src/app ./server
-COPY --from=builder-client /usr/src/app/dist ./client/dist
+COPY --from=builder-client /usr/src/app/dist ./server/public
 
 CMD ["node", "./server/bin/www"]
 

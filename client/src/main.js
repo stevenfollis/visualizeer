@@ -1,20 +1,28 @@
-import Vue from 'vue';
-import socketio from 'socket.io-client';
-import VueSocketIO from 'vue-socket.io';
-import App from './App.vue';
-import store from './store';
-import router from './router';
-import filters from './filters';
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
+import filters from "./filters";
+import VueSocketIO from "vue-socket.io";
 
 // Setup Socket.io
-export const SocketInstance = socketio();
-Vue.use(VueSocketIO, SocketInstance, store);
+Vue.use(
+  new VueSocketIO({
+    debug: true,
+    connection: "http://localhost:3000",
+    vuex: {
+      store,
+      actionPrefix: "SOCKET_",
+      mutationPrefix: "SOCKET_"
+    }
+  })
+);
 
 Vue.config.productionTip = false;
 
 new Vue({
-  store,
   router,
+  store,
   filters,
-  render: h => h(App),
-}).$mount('#app');
+  render: h => h(App)
+}).$mount("#app");

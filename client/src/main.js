@@ -4,12 +4,15 @@ import router from "./router";
 import store from "./store";
 import filters from "./filters";
 import VueSocketIO from "vue-socket.io";
+import socketio from "socket.io-client";
 
 // Setup Socket.io
+export const SocketInstance = socketio();
+
 Vue.use(
   new VueSocketIO({
     debug: true,
-    connection: "http://localhost",
+    connection: SocketInstance,
     vuex: {
       store,
       actionPrefix: "SOCKET_",

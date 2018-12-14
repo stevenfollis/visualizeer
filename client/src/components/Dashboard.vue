@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    
     <!-- Disconnected -->
     <div class="offline" v-if="!sharedState.isConnected">
       <h1>Offline</h1>
@@ -7,6 +8,7 @@
     </div>
 
     <div class="online" v-if="sharedState.isConnected">
+
       <div class="refiners">
         <form action="none">
           <input type="text" placeholder="🔍 Filter Containers" v-model="query">
@@ -110,11 +112,12 @@
               v-if="node.Containers.length !== 0 && container.Image.length < 64"
               class="list-item"
               v-bind:class="[   {created: container.State == 'created'}, 
+                                {dead: container.State == 'dead'},
+                                {exited: container.State == 'exited'},
+                                {paused: container.State == 'paused'},
+                                {preparing: container.State == 'preparing'}, 
                                 {restarting: container.State == 'restarting'}, 
-                                {running: container.State == 'running'}, 
-                                {paused: container.State == 'paused'}, 
-                                {exited: container.State == 'exited'}, 
-                                {dead: container.State == 'dead'} ]"
+                                {running: container.State == 'running'} ]"
             >
               <span class="repository">{{container.Image | containerRepository}}</span>
               <h3 class="image">{{container.Image | containerImage}}</h3>
@@ -351,7 +354,8 @@ $danger: #ef4a53;
       background-color: $success;
     }
 
-    li.created span:first-child::before {
+    li.created span:first-child::before,
+    li.preparing span:first-child::before {
       background-color: $blue;
     }
 

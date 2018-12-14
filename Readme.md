@@ -15,7 +15,7 @@ Uses the Universal Control Plane (UCP) API
 ```
 docker run \
   -d \
-  -p 80:80 \
+  -p 80 \
   -e 'ucp_fqdn=ucp.contoso.com' \
   -e 'ucp_username=admin' \
   -e 'ucp_password=SecurePassw0rd1' \
@@ -39,21 +39,29 @@ printf 'SecurePassw0rd1' | docker secret create visualizeer.ucp_password -
 #### Docker Stack with Secrets:
 
 ```yaml
-version: "3"
+version: "3.3"
 services:
   visualizeer:
     image: stevenfollis/visualizeer:latest
     ports:
-      - "80:80"
+      - "80"
     deploy:
       placement:
         constraints:
           - node.platform.os == linux
           - node.role == worker
-    environment:
-      - ucp_fqdn=ucp.contoso.com
-      - ucp_username=admin
-      - ucp_password=SecurePassw0rd1
+    secrets:
+      - visualizeer.ucp_fqdn
+      - visualizeer.ucp_username
+      - visualizeer.ucp_password
+
+secrets:
+  visualizeer.ucp_fqdn:
+    external: true
+  visualizeer.ucp_username:
+    external: true
+  visualizeer.ucp_password:
+    external: true
 ```
 
 ### Environment Variables
@@ -75,7 +83,7 @@ services:
   visualizeer:
     image: stevenfollis/visualizeer:latest
     ports:
-      - "80:80"
+      - "80"
     deploy:
       placement:
         constraints:
@@ -85,6 +93,36 @@ services:
       - ucp_fqdn=ucp.contoso.com
       - ucp_username=admin
       - ucp_password=SecurePassw0rd1
+```
+
+#### Docker Stack with Interlock:
+
+```yaml
+version: "3.3"
+services:
+  web:
+    image: stevenfollis/visualizeer:latest
+    deploy:
+      placement:
+        constraints:
+          - node.platform.os == linux
+          - node.role == worker
+      labels:
+        com.docker.lb.hosts: viz.apps.moby.com
+        com.docker.lb.network: visualizeer_default
+        com.docker.lb.port: 80
+    secrets:
+      - visualizeer.ucp_fqdn
+      - visualizeer.ucp_username
+      - visualizeer.ucp_password
+
+secrets:
+  visualizeer.ucp_fqdn:
+    external: true
+  visualizeer.ucp_username:
+    external: true
+  visualizeer.ucp_password:
+    external: true
 ```
 
 ## Features

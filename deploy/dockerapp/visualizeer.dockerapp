@@ -1,0 +1,50 @@
+# This section contains your application metadata.
+# Version of the application
+version: 0.1.0
+# Name of the application
+name: visualizeer
+# A short description of the application
+description: Web application for visualizing the containers running on a Docker Enterprise cluster
+# Namespace to use when pushing to a registry. This is typically your Hub username.
+namespace: stevenfollis
+# List of application maitainers with name and email for each
+maintainers:
+  - name: Steven Follis
+    email: steven.follis@docker.com
+# Specify false here if your application doesn't support Swarm or Kubernetes
+targets:
+  swarm: true
+  kubernetes: true
+
+---
+
+# This section contains the Compose file that describes your application services.
+version: "3.3"
+services:
+  visualizeer:
+    image: stevenfollis/visualizeer:latest
+    ports:
+      - "80"
+    deploy:
+      placement:
+        constraints:
+          - node.platform.os == linux
+          - node.role == worker
+      labels:
+        com.docker.lb.hosts: ${interlock.hosts}
+        com.docker.lb.network: ${deployment.name}_default
+        com.docker.lb.port: 80
+    environment:
+      - ucp_fqdn=${ucp.fqdn}
+      - ucp_username=${ucp.username}
+      - ucp_password=${ucp.password}
+
+---
+
+# This section contains the default values for your application settings.
+deployment.name: visualizeer
+port: 80
+ucp.fqdn: ucp.moby.com
+ucp.username: admin
+ucp.password: 'SecurePassw0rd1'
+interlock.hosts: viz.apps.moby.com

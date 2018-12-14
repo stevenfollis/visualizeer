@@ -165,7 +165,7 @@ async function getNodes() {
   // Setup Request options for containers
   const containerOptions = {
     method: 'GET',
-    uri: `https://${config.ucp_fqdn}/containers/json?all=true&filters={"status":["created","restarting","running","removing","paused"]}`,
+    uri: `https://${config.ucp_fqdn}/containers/json?all=true&filters={"status":["created","preparing","restarting","running","removing","paused"]}`,
     headers: {
       authorization: `Bearer ${token}`
     },

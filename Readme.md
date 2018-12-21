@@ -111,6 +111,7 @@ services:
         com.docker.lb.hosts: viz.apps.moby.com
         com.docker.lb.network: visualizeer_default
         com.docker.lb.port: 80
+        com.docker.lb.websocket_endpoints: /socket.io
     secrets:
       - visualizeer.ucp_fqdn
       - visualizeer.ucp_username

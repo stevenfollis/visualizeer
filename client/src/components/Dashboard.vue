@@ -170,6 +170,10 @@ $warning: #f5d000;
 $success: #08ce76;
 $danger: #ef4a53;
 
+::-webkit-scrollbar {
+  display: none;
+}
+  
 .container {
   border-top: 4px solid $blue;
   background-color: #f7f7f7;
@@ -271,7 +275,7 @@ $danger: #ef4a53;
     min-width: 12em;
     flex: 0 0 auto;
     box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.05);
-    overflow: scroll;
+    overflow: hidden;
     background-color: #fff;
     white-space: nowrap;
 
@@ -290,7 +294,7 @@ $danger: #ef4a53;
     min-width: 12em;
     flex: 0 0 auto;
     box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.05);
-    overflow-y: scroll;
+    overflow-y: auto;
     height: 100%;
     background-color: #fff;
   }

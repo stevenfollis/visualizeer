@@ -169,10 +169,6 @@ $blue: #099cec;
 $warning: #f5d000;
 $success: #08ce76;
 $danger: #ef4a53;
-
-::-webkit-scrollbar {
-  display: none;
-}
   
 .container {
   border-top: 4px solid $blue;
@@ -297,6 +293,10 @@ $danger: #ef4a53;
     overflow-y: auto;
     height: 100%;
     background-color: #fff;
+    
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   div ul {

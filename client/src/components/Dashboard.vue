@@ -17,11 +17,12 @@
 
       <div class="nodes">
         <div
+          v-bind:title="node.Spec.Role + ' - ' + node.Spec.Availability"
           v-bind:key="node.Id"
           v-for="node in filteredNodes"
-          v-bind:class="[ {active: node.Spec.Availability == 'active'},
-                              {pause: node.Spec.Availability == 'pause'},
-                              {drain: node.Spec.Availability == 'drain'}]"
+          v-bind:class="[   {active: node.Spec.Availability == 'active'},
+                            {pause: node.Spec.Availability == 'pause'},
+                            {drain: node.Spec.Availability == 'drain'}]"
         >
           <div class="header">
             <h1>
@@ -109,7 +110,6 @@
             <li
               v-bind:key="container.Id"
               v-for="container in node.Containers"
-              v-if="node.Containers.length !== 0 && container.Image.length < 64"
               class="list-item"
               v-bind:class="[   {created: container.State == 'created'}, 
                                 {dead: container.State == 'dead'},
@@ -119,9 +119,9 @@
                                 {restarting: container.State == 'restarting'}, 
                                 {running: container.State == 'running'} ]"
             >
-              <span class="repository">{{container.Image | containerRepository}}</span>
-              <h3 class="image">{{container.Image | containerImage}}</h3>
-              <div class="tag">
+              <span class="repository">{{container | containerRepository}}</span>
+              <h3 class="image" v-bind:title="container.Image">{{container | containerImage}}</h3>
+              <div class="tag" v-bind:title="container.Status">
                 <span>{{container.State}}</span>
                 <span>{{container.Image | containerTag}}</span>
               </div>
@@ -159,6 +159,9 @@ export default {
         return node;
       });
     }
+    //sortedContainers() {
+    //  return this.sharedState.nodes.map(node => {})
+    //}
   }
 };
 </script>
@@ -169,7 +172,7 @@ $blue: #099cec;
 $warning: #f5d000;
 $success: #08ce76;
 $danger: #ef4a53;
-  
+
 .container {
   border-top: 4px solid $blue;
   background-color: #f7f7f7;
@@ -293,7 +296,7 @@ $danger: #ef4a53;
     overflow-y: auto;
     height: 100%;
     background-color: #fff;
-    
+
     &::-webkit-scrollbar {
       display: none;
     }
@@ -313,12 +316,18 @@ $danger: #ef4a53;
     }
 
     li h3 {
-      margin: 0;
+      cursor: auto;
+      margin: 0 auto;
       padding: 0.5em 0;
       font-size: 1.3em;
+      max-width: 250px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     li span {
+      cursor: auto;
       margin-bottom: 0.5em;
       word-break: break-all;
     }

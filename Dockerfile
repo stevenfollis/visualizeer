@@ -54,8 +54,8 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 # Copy files
-COPY --from=builder-server /usr/src/app ./server
-COPY --from=builder-client /usr/src/app/dist ./server/public
+COPY --from=builder-server /usr/src/app ./
+COPY --from=builder-client /usr/src/app/dist ./public
 
-CMD ["node", "./server/bin/www"]
+CMD ["node", "./bin/www"]
 

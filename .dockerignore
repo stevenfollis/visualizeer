@@ -1,2 +1,12 @@
 node_modules
-dist
+npm-debug.log
+Dockerfile*
+docker-compose*
+.dockerignore
+.git
+.gitignore
+.env
+*/obj
+README.md
+LICENSE
+.vscode

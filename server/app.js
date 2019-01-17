@@ -165,7 +165,8 @@ async function getNodes() {
   // Setup Request options for containers
   const containerOptions = {
     method: 'GET',
-    uri: `https://${config.ucp_fqdn}/containers/json?all=true&filters={"status":["created","preparing","restarting","running","removing","paused"]}`,
+    // uri: `https://${config.ucp_fqdn}/containers/json?all=true&filters={"status":["created","preparing","restarting","running","removing","paused"]}`,
+    uri: `https://${config.ucp_fqdn}/containers/json?all=true}`,
     headers: {
       authorization: `Bearer ${token}`
     },
@@ -196,6 +197,9 @@ async function getNodes() {
       }
 
     })
+
+    // Sort Containers by their state
+    node.Containers = _.reverse(_.sortBy(node.Containers, ['State', 'Created']));
 
     return node;
 
